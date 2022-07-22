@@ -10,18 +10,15 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\ValutesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Valutes';
+$this->title = 'Currencies';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="valutes-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
-        <?= Html::a('Create Valutes', ['create'], ['class' => 'btn btn-success']) ?>
+        <button class="btn btn-success updateCurrenciesInformation">Update information</button>
     </p>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -31,18 +28,35 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'name',
-            'num_code',
-            'char_code',
-            'old_value',
-            //'new_value',
-            //'created_date',
-            //'updated_date',
             [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Valutes $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                    'format' => 'raw',
+                    'attribute' => 'old_value',
+                    'value' => function ($model) {
+                        if ($model->old_value <= $model->new_value) {
+                            return "<span style='color: #25af36'>$model->old_value</span>";
+                        }
+
+                        return "<span style='color: red'>$model->old_value</span>";
+                    }
             ],
+            [
+                    'format' => 'raw',
+                    'attribute' => 'new_value',
+                    'value' => function ($model) {
+                        if ($model->old_value <= $model->new_value) {
+                            return "<span style='color: #25af36'>$model->new_value</span>";
+                        }
+
+                        return "<span style='color: red'>$model->new_value</span>";
+                    }
+            ],
+            'char_code',
+//            [
+//                'class' => ActionColumn::className(),
+//                'urlCreator' => function ($action, Valutes $model, $key, $index, $column) {
+//                    return Url::toRoute([$action, 'id' => $model->id]);
+//                 }
+//            ],
         ],
     ]); ?>
 

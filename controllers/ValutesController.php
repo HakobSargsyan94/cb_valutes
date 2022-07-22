@@ -2,8 +2,11 @@
 
 namespace app\controllers;
 
+use app\commands\CurrensiesController;
+use app\models\CurlHelper;
 use app\models\Valutes;
 use app\models\ValutesSearch;
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -112,6 +115,18 @@ class ValutesController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
+
+        return $this->redirect(['index']);
+    }
+
+    /**
+     * @return bool|\yii\web\Response
+     */
+    public function actionUpdateCurrencies() {
+        $request = Yii::$app->request;
+        if ($request->isAjax) {
+            return $upsertMethod = CurrensiesController::upsertCurrencies();
+        }
 
         return $this->redirect(['index']);
     }

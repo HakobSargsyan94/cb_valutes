@@ -29,6 +29,13 @@ class CurrensiesController extends Controller
      */
     public function actionIndex()
     {
+        return self::upsertCurrencies();
+    }
+
+    /**
+     * @return bool
+     */
+    public static function upsertCurrencies () {
         $res = false;
         $response = CurlHelper::getCurlSimpleData(self::URL_CURRENSIES);
         if ($response) {
